@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .dashboard-container {
+      background: white;
+      padding: 50px 60px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 400px;
+    }
+
+    .dashboard-container h1 {
+      margin-bottom: 35px;
+      color: #333;
+    }
+
+    .dashboard-container a {
+      display: block;
+      margin: 12px 0;
+      padding: 12px 0;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .dashboard-container a:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>Bem-vindo ao Sistema</h1>
+    <div id="menu"></div>
+  </div>
+
+  <script>
+    const cargo = localStorage.getItem('cargoUsuario');
+    const menuDiv = document.getElementById('menu');
+
+    const menus = {
+      administrador: ["Cadastrar Mudança","Plano de Etapas","Riscos e Resultados","Histórico","Gerenciar Usuários","Sair"],
+      gerente: ["Cadastrar Mudança","Plano de Etapas","Riscos e Resultados","Histórico","Sair"],
+      desenvolvedor: ["Minhas Mudanças","Minhas Etapas","Sair"],
+      qa: ["Mudanças para Teste","Registrar Resultados","Sair"],
+      usuario: ["Solicitar Mudança","Acompanhar Status","Sair"]
+    };
+
+    function criarLink(texto) {
+      const link = document.createElement('a');
+      link.textContent = texto;
+
+      // Redirecionamento seguro para Cadastro de Mudança
+      if(texto.toLowerCase().includes("cadastrar mudança")) {
+        link.addEventListener('click', () => window.location.href = "Untitled-3.html");
+      }
+
+      // Sair do sistema
+      if(texto.toLowerCase() === "sair") {
+        link.addEventListener('click', () => {
+          localStorage.removeItem('cargoUsuario');
+          window.location.href = "Untitled-1.html";
+        });
+      }
+
+      return link;
+    }
+
+    if(cargo && menus[cargo]) {
+      menus[cargo].forEach(item => menuDiv.appendChild(criarLink(item)));
+    } else {
+      menuDiv.innerHTML = "<p>Erro: Cargo inválido.</p>";
+    }
+  </script>
+</body>
+</html>
